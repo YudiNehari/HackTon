@@ -32,14 +32,7 @@ const volunteers: Volunteer[] = [
 ];
 
 export default function DonerPage() {
-    // check if user is logged in in local storage
-    // if not, redirect to login page
-    const user = localStorage.getItem('user');
-    if (!user) {
-        console.log('no user');
-        // router.push('/login');
-    }
-    console.log('user' ,user);
+
     
     const [open, setOpen] = useState(false);
     const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null);
