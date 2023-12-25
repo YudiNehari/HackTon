@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation';
 import { AppBar, Toolbar, Button, Box, Modal, TextField, Typography, Fade, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import Link from 'next/link';
 
-const UserContext:any = createContext(null);
-
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser]:any = useState(null);
@@ -147,12 +145,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Fade>
           </Modal>
         </Box>
-        <UserContext.Provider value={{ user, setUser }}>
           {children}
-        </UserContext.Provider>
       </body>
     </html>
   );
 }
-
-export const useUser = () => useContext(UserContext);
