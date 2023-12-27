@@ -18,14 +18,20 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if there's a user in the session storage
-    let userId = null;
-    if (window !== undefined) {
-    if (sessionStorage.getItem('user_id') === null) {
-       userId = sessionStorage.getItem('user_id');
+    // Function to check and set user logged in status
+    function checkUserLoggedIn() {
+      // Check if window is defined (i.e., running in browser/client-side)
+      if (typeof window !== 'undefined') {
+        // Retrieve userId from sessionStorage
+        const userId = sessionStorage.getItem('user_id');
+
+        // Set userLoggedIn state based on whether userId is not null
+        setUserLoggedIn(!!userId);
+      }
     }
-  }
-    setUserLoggedIn(!!userId);
+
+    // Call the function
+    checkUserLoggedIn();
   }, []);
 
   const handleOpenRegister = () => setOpenRegister(true);
