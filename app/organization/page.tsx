@@ -11,6 +11,7 @@ import {
   Box,
   Paper
 } from '@mui/material';
+import BusinessRegistrationForm from '@/components/forms/bussinessForm';
 
 // Define a TypeScript interface for volunteer applications
 interface VolunteerApplication {
@@ -70,29 +71,7 @@ export default function OrganizationPage() {
             Request a Volunteer
           </Typography>
           <Paper sx={{ padding: 2 }}>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Volunteer Need"
-                name="volunteerNeed"
-                value={formState.volunteerNeed}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Details"
-                name="details"
-                value={formState.details}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-                multiline
-                rows={4}
-              />
-              <Button type="submit" variant="contained" sx={{ marginTop: 2 }}>
-                Submit Request
-              </Button>
-            </form>
+            <BusinessRegistrationForm />
           </Paper>
         </Grid>
       </Grid>

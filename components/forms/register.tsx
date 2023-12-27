@@ -26,19 +26,13 @@ const RegisterComponent: React.FC<RegisterComponentProps> = ({ open, handleClose
       const isSuccess = (Math.random() > 0.5);
       console.log(isSuccess);
       
-      let response = {};
-      if(isSuccess){    
-        response = { data: { user_id: 123 } };
-      }else{ 
-        response = await axios.post('/api/register', formValues);
-      }
+      let response = await axios.post('http://13.51.64.28/register', formValues);
         // @ts-ignore
 
       if (response && response.data) {
-        // @ts-ignore
-        // Assuming the response has a 'user_id' property
         const { user_id } = response.data;
-  
+        console.log('response', response.data);
+        
         console.log('Registration successful. User ID:', user_id);
         // @ts-ignore
           sessionStorage.setItem('user_id', user_id);

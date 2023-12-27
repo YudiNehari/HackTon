@@ -22,14 +22,8 @@ const SignInComponent: React.FC<SignInComponentProps> = ({ open, handleClose }) 
       const isSuccess = (Math.random() > 0.5);
       console.log(isSuccess);
       
-      let response = {};
-      if(isSuccess){    
-        response = { data: { user_id: 123, business_id: 456 } };
-      }else{
-        
-        response = await axios.post('/api/login', formValues);
-      }
-      // Assuming the response has a 'user_id' and 'business_id' property
+      
+      let response = await axios.post('http://13.51.64.28/login', formValues);
       
       // @ts-ignore
       console.log(response,response.data,response && response.data);
@@ -37,12 +31,14 @@ const SignInComponent: React.FC<SignInComponentProps> = ({ open, handleClose }) 
       // @ts-ignore
       if (response && response.data) {
       // @ts-ignore
+      console.log('form', response.data);
+
         const { user_id, business_id } = response.data;
         console.log('Login successful. User ID:', user_id);
         console.log('Business ID:', business_id);
         sessionStorage.setItem('user_id', user_id);
         sessionStorage.setItem('business_id', business_id);
-        Router.push('choose');
+        Router.push('/choose');
         setError(null);
         setSuccess(true);
       }
