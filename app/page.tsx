@@ -1,16 +1,16 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, Typography, Grid, useMediaQuery } from '@mui/material';    
+import { Box, Card, CardContent, Typography, Grid, CardMedia } from '@mui/material';
 
 // CountUp component as defined previously
 
 export default function Home() {
   const stats = [
-    { title: 'Volunteers', value: 120 },
-    { title: 'Businesses Helped', value: 75 },
-    { title: 'Donors', value: 200 },
-    { title: 'Money Donated', value: 15000, isCurrency: true },
-    // Add more stats here
+    { title: 'Volunteers', value: 120, imageUrl: 'assets/val.png' },
+    { title: 'Businesses Helped', value: 75, imageUrl: 'assets/bus.png' },
+    { title: 'Donors', value: 20, imageUrl: 'assets/don.png' },
+    { title: 'Money Donated', value: 15000, isCurrency: true, imageUrl: 'assets/mon.png' },
+    // Add more stats and images here
   ];
 
   return (
@@ -30,10 +30,15 @@ export default function Home() {
               height: '100%',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <CardContent>
+              <CardMedia
+                component="img"
+                height="300"
+                image={stat.imageUrl}
+                alt={stat.title}
+              />
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" component="div" gutterBottom>
                   {stat.title}
                 </Typography>
@@ -49,7 +54,6 @@ export default function Home() {
     </Box>
   );
 }
-
 
 
 interface CountUpProps {
