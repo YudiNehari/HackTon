@@ -6,6 +6,7 @@ import { styled, keyframes } from '@mui/system';
 // @ts-ignore
 import Wave from 'react-wavify'
 import Link from 'next/link';
+import AudioRecorder from '@/components/audio';
 // Animation for the wave effect
 const wave = keyframes`
   0%, 100% { transform: scale(1); }
@@ -49,26 +50,16 @@ export default function Home() {
       backgroundPosition: 'center',
       padding: 4,
     }}>
+
+
       <Box sx={{
         position: 'absolute',
         top: 10,
-        right: 10,
+        right: 20,
       }}>
-        <StyledIcon
-          fontSize="large"
-          color="primary"
-          onClick={handleClick}
-          animate={animate}
-        />
+                  <AudioRecorder />
+
       </Box>
-      {animate && 
-        <Box sx={{
-          position: 'absolute',
-          top: 10,
-          right: 20,
-        }}>
-      </Box>
-      }
       <Grid container spacing={2}>
         {stats.map((stat, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
