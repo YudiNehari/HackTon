@@ -20,9 +20,11 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   useEffect(() => {
     // Check if there's a user in the session storage
     let userId = null;
+    if (window !== undefined) {
     if (sessionStorage.getItem('user_id') === null) {
        userId = sessionStorage.getItem('user_id');
     }
+  }
     setUserLoggedIn(!!userId);
   }, []);
 
@@ -39,10 +41,11 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   };
 
   let isUserLoggedIn = null;
+  if (window !== undefined) {
   if (sessionStorage.getItem('user_id')) {
    isUserLoggedIn = sessionStorage.getItem('user_id') !== null;
   }
-
+  }
   return (
     <html lang="en">
       <body>

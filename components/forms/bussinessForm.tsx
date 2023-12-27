@@ -7,7 +7,7 @@ const BusinessRegistrationForm: React.FC = () => {
   const [formData, setFormData] = useState({
     business_name: '',
     city: '',
-    user_id: sessionStorage.getItem('user_id') || '', // Get user_id from sessionStorage
+    user_id: (window !== undefined) && sessionStorage.getItem('user_id') || '', // Get user_id from sessionStorage
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
