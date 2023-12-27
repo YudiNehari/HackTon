@@ -29,11 +29,12 @@ const SignInComponent: React.FC<SignInComponentProps> = ({ open, handleClose }) 
         const response = await axios.post('/api/login', formValues);
       }
       // Assuming the response has a 'user_id' and 'business_id' property
-      const { user_id, business_id } = response.data;
-
-      console.log('Login successful. User ID:', user_id);
-      console.log('Business ID:', business_id);
-      if(response){
+      
+      // @ts-ignore
+      if (response && response.data) {
+        const { user_id, business_id } = response.data;
+        console.log('Login successful. User ID:', user_id);
+        console.log('Business ID:', business_id);
         sessionStorage.setItem('user_id', user_id);
         sessionStorage.setItem('business_id', business_id);
         Router.push('choose');
