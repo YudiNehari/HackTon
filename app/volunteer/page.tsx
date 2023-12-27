@@ -1,39 +1,51 @@
 'use client'
-import React, { useState } from 'react';
-import { Card, CardContent, Typography, Button, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { FormControl, Select, MenuItem, InputLabel, Card, CardContent, Typography, Button, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import axios from 'axios';
 
-interface Organization {
-    id: number;
-    name: string;
-    location: string;
-    needs: string;
-    hours: string;
+
+interface Activity {
+    activity_id: number;
+    city: string;
+    start_date: string;
+    end_date: string;
+    is_physical: boolean;
+    type_volunteer: string;
 }
 
-const organizations: Organization[] = [
-    { id: 1, name: 'Helping Hands', location: 'New York', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 2, name: 'Green Earth', location: 'San Francisco', needs: 'Park cleaning', hours: '10:00 - 16:00' },
-    { id: 3, name: 'Food Bank', location: 'Chicago', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 4, name: 'Homeless Shelter', location: 'Los Angeles', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 5, name: 'Community Center', location: 'New York', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 6, name: 'Helping Hands', location: 'San Francisco', needs: 'Park cleaning', hours: '10:00 - 16:00' },
-    { id: 7, name: 'Green Earth', location: 'Chicago', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 8, name: 'Food Bank', location: 'Los Angeles', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 9, name: 'Homeless Shelter', location: 'New York', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 10, name: 'Community Center', location: 'San Francisco', needs: 'Park cleaning', hours: '10:00 - 16:00' },
-    { id: 11, name: 'Helping Hands', location: 'Chicago', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 12, name: 'Green Earth', location: 'Los Angeles', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 13, name: 'Food Bank', location: 'New York', needs: 'Food packing', hours: '09:00 - 15:00' },
-    { id: 14, name: 'Homeless Shelter', location: 'San Francisco', needs: 'Park cleaning', hours: '10:00 - 16:00' },
-    { id: 15, name: 'Community Center', location: 'Chicago', needs: 'Food packing', hours: '09:00 - 15:00' },
-];
+// Mock API call
+const fetchActivities = async () => {
+    return new Promise<Activity[]>(resolve => {
+        setTimeout(() => {
+            resolve([
+                { activity_id: 1, city: 'New York', start_date: '2023-01-10', end_date: '2023-01-15', is_physical: true, type_volunteer: 'Food packing' },
+                { activity_id: 2, city: 'New York', start_date: '2023-01-10', end_date: '2023-01-15', is_physical: true, type_volunteer: 'Food packing' },
+                { activity_id: 3, city: 'New York', start_date: '2023-01-10', end_date: '2023-01-15', is_physical: true, type_volunteer: 'Food packing' },
+                { activity_id: 4, city: 'New York', start_date: '2023-01-10', end_date: '2023-01-15', is_physical: true, type_volunteer: 'Food packing' },
+                { activity_id: 5, city: 'New York', start_date: '2023-01-10', end_date: '2023-01-15', is_physical: true, type_volunteer: 'Food packing' },
+                { activity_id: 6, city: 'New York', start_date: '2023-01-10', end_date: '2023-01-15', is_physical: true, type_volunteer: 'Food packing' },
+            ]);
+        }, 1000);
+    });
+};
+
 
 export default function VolunteerPage() {
+    const [activities, setActivities] = useState<Activity[]>([]);
     const [open, setOpen] = useState(false);
-    const [selectedOrganization, setSelectedOrganization] = useState<Organization | null>(null);
+    const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+    const [sortCriteria, setSortCriteria] = useState('');
 
-    const handleClickOpen = (organization: Organization) => {
-        setSelectedOrganization(organization);
+    useEffect(() => {
+        fetchActivities().then(setActivities).catch(console.error);
+    }, []);
+
+    useEffect(() => {
+        sortActivities();
+    }, [sortCriteria]);
+
+    const handleClickOpen = (activity: Activity) => {
+        setSelectedActivity(activity);
         setOpen(true);
     };
 
@@ -42,8 +54,30 @@ export default function VolunteerPage() {
     };
 
     const handleVolunteer = () => {
-        console.log(`User volunteered for organization: ${selectedOrganization?.name}`);
+        console.log(`User volunteered for activity: ${selectedActivity?.activity_id}`);
+        // send volunteer request to API
+        axios.post('/api/volunteer', { activity_id: selectedActivity?.activity_id })
         handleClose();
+    };
+
+    const sortActivities = () => {
+        setActivities(prevActivities => {
+            return [...prevActivities].sort((a, b) => {
+                switch (sortCriteria) {
+                    case 'city':
+                        return a.city.localeCompare(b.city);
+                    case 'is_physical':
+                        return Number(a.is_physical) - Number(b.is_physical);
+                    case 'type_volunteer':
+                        return a.type_volunteer.localeCompare(b.type_volunteer);
+                    case 'date':
+                        // @ts-ignore
+                        return new Date(a.start_date) - new Date(b.start_date);
+                    default:
+                        return 0;
+                }
+            });
+        });
     };
 
     return (
@@ -51,24 +85,40 @@ export default function VolunteerPage() {
             <Typography variant="h2" align="center" gutterBottom>
                 Volunteer
             </Typography>
+            <FormControl sx={{ width: '50%' }} style={{margin: 'auto'}}>
+                <InputLabel>Sort By</InputLabel>
+                <Select
+                    value={sortCriteria}
+                    label="Sort By"
+                    onChange={(e) => setSortCriteria(e.target.value)}
+                >
+                    <MenuItem value="city">City</MenuItem>
+                    <MenuItem value="is_physical">Physical Activity</MenuItem>
+                    <MenuItem value="type_volunteer">Type of Volunteer Work</MenuItem>
+                    <MenuItem value="date">Start Date</MenuItem>
+                </Select>
+            </FormControl>
             <Grid container justifyContent="center" alignItems="stretch" spacing={2}>
-                {organizations.map((organization) => (
-                    <Grid item key={organization.id} xs={12} sm={6} md={4} lg={3} xl={2} m={1}>
+                {activities.map((activity) => (
+                    <Grid item key={activity.activity_id} xs={12} sm={6} md={4} lg={3} xl={2} m={1}>
                         <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', maxWidth: 345, m: 'auto' }}>
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {organization.name}
+                                    Activity #{activity.activity_id}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    Location: {organization.location}
+                                    City: {activity.city}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    Needs: {organization.needs}
+                                    Start Date: {activity.start_date}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    Hours: {organization.hours}
+                                    End Date: {activity.end_date}
                                 </Typography>
-                                <Button variant="contained" onClick={() => handleClickOpen(organization)} sx={{mt: 2}}>
+                                <Typography variant="body2" color="text.secondary">
+                                    Type: {activity.type_volunteer}
+                                </Typography>
+                                <Button variant="contained" onClick={() => handleClickOpen(activity)} sx={{ mt: 2 }}>
                                     Volunteer
                                 </Button>
                             </CardContent>
@@ -81,7 +131,7 @@ export default function VolunteerPage() {
                 <DialogTitle>Volunteer Confirmation</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to volunteer for {selectedOrganization?.name}?
+                        Are you sure you want to volunteer for Activity #{selectedActivity?.activity_id}?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

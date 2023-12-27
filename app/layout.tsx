@@ -1,4 +1,5 @@
 'use client'
+import './globals.css';
 import React, { useState, ReactNode } from 'react';
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import Link from 'next/link';
