@@ -47,7 +47,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   };
 
   let isUserLoggedIn = null;
-  if (window !== undefined) {
+  if (typeof window !== 'undefined') {
   if (sessionStorage.getItem('user_id')) {
    isUserLoggedIn = sessionStorage.getItem('user_id') !== null;
   }
