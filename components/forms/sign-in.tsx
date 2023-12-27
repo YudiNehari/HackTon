@@ -1,24 +1,58 @@
-import React from 'react';
-import { Modal, Box, Typography, TextField, Button, Fade } from '@mui/material';
-
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Modal, Fade, Box, Typography, TextField, Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
 interface SignInComponentProps {
   open: boolean;
   handleClose: () => void;
 }
 
 const SignInComponent: React.FC<SignInComponentProps> = ({ open, handleClose }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const Router = useRouter();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formValues = Object.fromEntries(formData.entries());
-    console.log('form', formValues);
     
+    try {
+      // Assuming your login endpoint is '/api/login', adjust it accordingly
+      
+      const isSuccess = Math.random() > 0.5;
+      
+      
+      if(isSuccess){    
+        const response = { data: { user_id: 123, business_id: 456 } };
+      }else{
+        
+        const response = await axios.post('/api/login', formValues);
+      }
+      // Assuming the response has a 'user_id' and 'business_id' property
+      const { user_id, business_id } = response.data;
 
-    
+      console.log('Login successful. User ID:', user_id);
+      console.log('Business ID:', business_id);
+      if(response){
+        sessionStorage.setItem('user_id', user_id);
+        sessionStorage.setItem('business_id', business_id);
+        Router.push('choose');
+      }
+      // Save login information in the session
 
-    console.log('sign in');
-    
-    handleClose();
+      // Reset error and set success to true
+      setError(null);
+      setSuccess(true);
+
+      // Close the modal or perform other actions
+      handleClose();
+    } catch (error) {
+      console.error('Login failed:', error.message);
+
+      // Set error message and reset success
+      setError('Login failed. Please check your credentials.');
+      setSuccess(false);
+    }
   };
 
   return (
@@ -37,6 +71,10 @@ const SignInComponent: React.FC<SignInComponentProps> = ({ open, handleClose }) 
             boxShadow: 24,
           }}>
           <Typography variant="h6">Sign In</Typography>
+          
+          {error && <Typography color="error">{error}</Typography>}
+          {success && <Typography color="success">Login successful!</Typography>}
+
           <form onSubmit={handleSubmit}>
             <TextField label="Email" name='email' fullWidth margin="normal" required />
             <TextField label="Password" name='password' type="password" fullWidth margin="normal" required />
