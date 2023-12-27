@@ -5,6 +5,7 @@ import MicIcon from '@mui/icons-material/Mic';
 import { styled, keyframes } from '@mui/system';
 // @ts-ignore
 import Wave from 'react-wavify'
+import Link from 'next/link';
 // Animation for the wave effect
 const wave = keyframes`
   0%, 100% { transform: scale(1); }
@@ -20,10 +21,10 @@ const StyledIcon:any = styled(MicIcon)(({ theme, animate }: {theme: any, animate
 
 export default function Home() {
   const stats = [
-    { title: 'Volunteers', value: 120, imageUrl: 'assets/val.png' },
-    { title: 'Businesses Helped', value: 75, imageUrl: 'assets/bus.png' },
-    { title: 'Donors', value: 20, imageUrl: 'assets/don.png' },
-    { title: 'Money Donated', value: 15000, isCurrency: true, imageUrl: 'assets/mon.png' },
+    { title: 'Volunteers', value: 120, imageUrl: 'assets/val.png', url: 'volunteer' },
+    { title: 'Businesses Helped', value: 75, imageUrl: 'assets/bus.png', url: 'organization' },
+    { title: 'Donors', value: 20, imageUrl: 'assets/don.png', url: 'donor' },
+    { title: 'Money Donated', value: 15000, isCurrency: true, imageUrl: 'assets/mon.png', url: '' },
     // Add more stats and images here
   ];
 
@@ -71,6 +72,7 @@ export default function Home() {
       <Grid container spacing={2}>
         {stats.map((stat, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
+            <Link href={stat.url}>
             <Card sx={{
               height: '100%',
               display: 'flex',
@@ -93,6 +95,7 @@ export default function Home() {
                 </Typography>
               </CardContent>
             </Card>
+            </Link>
           </Grid>
         ))}
       </Grid>
