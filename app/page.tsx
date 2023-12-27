@@ -54,7 +54,7 @@ export default function Home() {
 
       <Box sx={{
         position: 'absolute',
-        top: 10,
+        top: 0,
         right: 20,
       }}>
                   <AudioRecorder />

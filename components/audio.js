@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
- 
+import Button from '@mui/material/Button';
+import AudioPlayer from '@mui/icons-material/Audiotrack';
+
 function AudioRecorder() {
   const [isRecording, setIsRecording] = useState(false);
   const [recordings, setRecordings] = useState([]);
@@ -117,15 +119,21 @@ function AudioRecorder() {
   return (
     <div>
       
-      <div>
-        {recordings.map((recording, index) => (
-          <div key={index}>
-            <audio src={recording} controls />
-          </div>
-        ))}
-      </div>
-      <button onClick={voiceChat}>Play Audio File</button>
-        
+
+      {recordings.map((recording, index) => (
+    <div key={index} style={{ marginBottom: '16px' }}>
+      <audio src={recording} controls style={{ width: '100%' }} />
+    </div>
+  ))}
+
+  <Button
+    variant="contained"
+    startIcon={<AudioPlayer />}
+    onClick={voiceChat}
+    style={{ marginTop: '20px', backgroundColor: '#4caf50', color: 'white' }}
+  >
+    Play AI Voice
+  </Button>
     
     
     </div>
