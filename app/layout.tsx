@@ -2,8 +2,8 @@
 import React, { useState, ReactNode } from 'react';
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import Link from 'next/link';
-import SignInComponent from '@/components/sign-in';
-import RegisterComponent from '@/components/register';
+import SignInComponent from '@/components/forms/sign-in';
+import RegisterComponent from '@/components/forms/register';
 
 interface RootLayoutProps {
   children: ReactNode;
