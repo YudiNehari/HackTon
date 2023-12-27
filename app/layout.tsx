@@ -10,8 +10,6 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 
-// ... (imports remain unchanged)
-
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   const [openRegister, setOpenRegister] = useState(false);
   const [openSignIn, setOpenSignIn] = useState(false);
@@ -20,9 +18,6 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   const handleCloseRegister = () => setOpenRegister(false);
   const handleOpenSignIn = () => setOpenSignIn(true);
   const handleCloseSignIn = () => setOpenSignIn(false);
-
-  // Check if user_id is set in sessionStorage
-  const isUserLoggedIn = sessionStorage.getItem('user_id') !== null;
 
   return (
     <html lang="en">
@@ -33,17 +28,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
               <Button color="inherit">
                 <Link href="/">Home</Link>
               </Button>
-              {/* Conditionally render based on whether user is logged in */}
-              {!isUserLoggedIn && (
-                <>
-                  <Button color="inherit" onClick={handleOpenRegister}>
-                    Register
-                  </Button>
-                  <Button color="inherit" onClick={handleOpenSignIn}>
-                    Sign In
-                  </Button>
-                </>
-              )}
+              <Button color="inherit" onClick={handleOpenRegister}>Register</Button>
+              <Button color="inherit" onClick={handleOpenSignIn}>Sign In</Button>
             </Toolbar>
           </AppBar>
 
